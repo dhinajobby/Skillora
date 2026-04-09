@@ -3,260 +3,136 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Skillora Prototype | Multi-Page App</title>
+    <title>Skillora Prototype</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; }
         .bg-skillora { background-color: #bcd4d9; }
+        /* Only show the page that matches the URL hash */
         .page { display: none; }
-        .page-active { display: block; }
+        .page:target { display: block; }
+        /* Show Home by default if no hash is present */
+        #home:not(:target) { display: block; }
+        /* If any other page is targeted, hide the home page */
+        :target ~ #home { display: none; }
+        /* General page visibility logic */
+        #home:target { display: block; }
     </style>
 </head>
 <body class="bg-gray-50">
 
-    <!-- NAVIGATION -->
+    <!-- NAVIGATION (Using standard href links) -->
     <nav class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
-                <div class="flex-shrink-0 flex items-center cursor-pointer" onclick="showPage('home')">
+                <a href="#home" class="flex-shrink-0 flex items-center">
                     <span class="text-2xl font-bold tracking-tighter text-gray-900">SKILLORA</span>
-                </div>
+                </a>
                 <div class="hidden md:flex space-x-8">
-                    <button onclick="showPage('find-help')" class="text-gray-600 hover:text-black">Find Help</button>
-                    <button onclick="showPage('worker-info')" class="text-gray-600 hover:text-black">Provide Service</button>
+                    <a href="#find-help" class="text-gray-600 hover:text-black">Find Help</a>
+                    <a href="#worker-info" class="text-gray-600 hover:text-black">Provide Service</a>
                 </div>
                 <div class="flex items-center space-x-4">
-                    <button onclick="showPage('login')" class="text-gray-700 font-medium hover:text-black">Login</button>
-                    <button onclick="showPage('signup')" class="bg-black text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-gray-800 transition">Register as Worker</button>
+                    <a href="#login" class="text-gray-700 font-medium hover:text-black">Login</a>
+                    <a href="#signup" class="bg-black text-white px-5 py-2 rounded-full text-sm font-semibold hover:bg-gray-800 transition">Register as Worker</a>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- PAGE: HOME -->
-    <div id="home" class="page page-active">
-        <header class="bg-skillora py-24 px-4 text-center">
-            <h1 class="text-6xl font-bold text-gray-900 mb-6">SKILLORA</h1>
-            <p class="text-2xl text-gray-700 mb-10 italic">"Bridging rural skills with urban needs"</p>
-            <div class="flex flex-col md:flex-row justify-center gap-4">
-                <button onclick="showPage('find-help')" class="bg-black text-white px-8 py-4 rounded-lg font-bold text-lg hover:scale-105 transition transform">Find Skilled Help</button>
-                <button onclick="showPage('worker-info')" class="bg-white text-black border-2 border-black px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition transform">Provide a Service</button>
-            </div>
-        </header>
-        <div class="max-w-7xl mx-auto px-4 py-16 text-center">
-            <p class="text-gray-500 uppercase tracking-widest text-sm font-bold">Connecting Rural Talent to Urban Demand</p>
-        </div>
-    </div>
+    <!-- THE PAGES (Note: Home is at the bottom of the list for CSS logic) -->
 
     <!-- PAGE: LOGIN -->
     <div id="login" class="page py-20">
         <div class="max-w-md mx-auto bg-white p-10 rounded-2xl shadow-xl">
             <h2 class="text-3xl font-bold mb-6 text-center">Welcome Back</h2>
             <div class="space-y-4">
-                <div>
-                    <label class="block text-sm font-bold mb-2">Email Address</label>
-                    <input type="email" placeholder="name@email.com" class="w-full border p-3 rounded-lg">
-                </div>
-                <div>
-                    <label class="block text-sm font-bold mb-2">Password</label>
-                    <input type="password" placeholder="••••••••" class="w-full border p-3 rounded-lg">
-                </div>
+                <input type="email" placeholder="Email" class="w-full border p-3 rounded-lg">
+                <input type="password" placeholder="Password" class="w-full border p-3 rounded-lg">
                 <button class="w-full bg-black text-white py-3 rounded-lg font-bold">Sign In</button>
-                <p class="text-center text-sm text-gray-500">Don't have an account? <span class="text-blue-600 cursor-pointer" onclick="showPage('signup')">Sign Up</span></p>
+                <p class="text-center text-sm">New? <a href="#signup" class="text-blue-600">Sign Up</a></p>
             </div>
         </div>
     </div>
 
-    <!-- PAGE: SIGN UP (WORKER) -->
+    <!-- PAGE: SIGN UP -->
     <div id="signup" class="page py-20">
         <div class="max-w-2xl mx-auto bg-white p-10 rounded-2xl shadow-xl border-t-8 border-skillora">
             <h2 class="text-3xl font-bold mb-2">Register as Worker</h2>
-            <p class="text-gray-500 mb-8">Join Skillora to find better job opportunities and fair wages.</p>
-            <div class="grid grid-cols-2 gap-4">
-                <div class="col-span-2 md:col-span-1">
-                    <label class="block text-sm font-bold mb-2">Full Name</label>
-                    <input type="text" placeholder="John Doe" class="w-full border p-3 rounded-lg">
-                </div>
-                <div class="col-span-2 md:col-span-1">
-                    <label class="block text-sm font-bold mb-2">Mobile Number</label>
-                    <input type="text" placeholder="+91 00000 00000" class="w-full border p-3 rounded-lg">
-                </div>
-                <div class="col-span-2">
-                    <label class="block text-sm font-bold mb-2">Primary Skill</label>
-                    <select class="w-full border p-3 rounded-lg">
-                        <option>Plumbing</option>
-                        <option>Carpentry</option>
-                        <option>Electrical</option>
-                        <option>Painting</option>
-                    </select>
-                </div>
-                <div class="col-span-2">
-                    <label class="block text-sm font-bold mb-2">Upload Skill Certificate (Optional)</label>
-                    <input type="file" class="w-full border p-3 rounded-lg text-sm">
-                </div>
-                <button class="col-span-2 bg-black text-white py-4 rounded-lg font-bold mt-4">Create Worker Profile</button>
+            <div class="grid grid-cols-2 gap-4 mt-6">
+                <input type="text" placeholder="Full Name" class="col-span-2 border p-3 rounded-lg">
+                <select class="col-span-2 border p-3 rounded-lg"><option>Plumbing</option><option>Carpentry</option></select>
+                <button class="col-span-2 bg-black text-white py-4 rounded-lg font-bold">Create Profile</button>
             </div>
         </div>
     </div>
 
-    <!-- PAGE: PROVIDE A SERVICE (Worker Info & Registration) -->
-    <div id="worker-info" class="page py-20 bg-white">
+    <!-- PAGE: WORKER INFO (Provide Service) -->
+    <div id="worker-info" class="page py-20">
         <div class="max-w-4xl mx-auto px-4">
-            <div class="bg-skillora p-10 rounded-3xl mb-12">
+            <div class="bg-skillora p-10 rounded-3xl mb-8">
                 <h2 class="text-4xl font-bold mb-4">Earn More with Skillora</h2>
-                <p class="text-lg text-gray-800">We bridge the gap by bringing your skills to high-demand urban markets.</p>
             </div>
-            
-            <h3 class="text-2xl font-bold mb-8">How to Register</h3>
             <div class="space-y-6">
-                <div class="flex gap-6 items-start">
-                    <div class="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center shrink-0">1</div>
-                    <div>
-                        <h4 class="font-bold">Register Online</h4>
-                        <p class="text-gray-600">Fill in your personal details, home location, and primary skill set.</p>
-                    </div>
-                </div>
-                <div class="flex gap-6 items-start">
-                    <div class="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center shrink-0">2</div>
-                    <div>
-                        <h4 class="font-bold">Verification</h4>
-                        <p class="text-gray-600">Our team will verify your background and skills to award the <b>Skillora Verified Badge</b>.</p>
-                    </div>
-                </div>
-                <div class="flex gap-6 items-start">
-                    <div class="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center shrink-0">3</div>
-                    <div>
-                        <h4 class="font-bold">Pay Small Registration Fee</h4>
-                        <p class="text-gray-600">To maintain the platform, a small one-time fee of $10 is required.</p>
-                    </div>
-                </div>
+                <div class="flex gap-4"><div class="font-bold">1.</div><p>Register online with your skills.</p></div>
+                <div class="flex gap-4"><div class="font-bold">2.</div><p>Get Skillora Verified badge.</p></div>
+                <div class="flex gap-4"><div class="font-bold">3.</div><p>Start earning urban wages.</p></div>
             </div>
-
-            <!-- Dummy Payment Link to Nowhere -->
-            <div class="mt-12 p-8 border-2 border-dashed border-gray-300 rounded-xl text-center">
-                <p class="text-sm text-gray-500 mb-4 font-bold">SECURE PAYMENT PROTOTYPE</p>
-                <a href="#" onclick="alert('This is a prototype. No real payment will be processed.')" class="bg-green-600 text-white px-10 py-4 rounded-full font-bold inline-block hover:bg-green-700">
-                    Pay Registration Fee & Join
-                </a>
+            <div class="mt-10 text-center">
+                <a href="#" onclick="alert('Prototype: Payment process simulation')" class="bg-green-600 text-white px-10 py-4 rounded-full font-bold">Pay $10 Fee</a>
             </div>
         </div>
     </div>
 
-    <!-- PAGE: FIND SKILLED HELP (Marketplace) -->
+    <!-- PAGE: FIND HELP -->
     <div id="find-help" class="page py-20">
         <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-4xl font-bold mb-8">Find Skilled Professionals</h2>
-            
-            <!-- Category Filters -->
-            <div class="flex flex-wrap gap-4 mb-12">
-                <button class="bg-black text-white px-6 py-2 rounded-full font-semibold">All</button>
-                <button class="bg-white border px-6 py-2 rounded-full font-semibold hover:bg-gray-100">Plumbing</button>
-                <button class="bg-white border px-6 py-2 rounded-full font-semibold hover:bg-gray-100">Carpentry</button>
-                <button class="bg-white border px-6 py-2 rounded-full font-semibold hover:bg-gray-100">Electrical</button>
-            </div>
-
-            <!-- Dummy Profiles Grid -->
-            <div class="grid md:grid-cols-3 gap-8">
-                
-                <!-- Profile 1 -->
-                <div class="bg-white border rounded-2xl overflow-hidden hover:shadow-lg transition">
-                    <div class="bg-gray-200 h-48 flex items-center justify-center">
-                        <i class="fa-solid fa-user text-6xl text-gray-400"></i>
+            <h2 class="text-4xl font-bold mb-8">Skilled Professionals</h2>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white border p-6 rounded-2xl flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-xl">Rajesh (Plumber)</h3>
+                        <div class="text-yellow-500"><i class="fa-solid fa-star"></i> 5.0</div>
                     </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold">Rajesh Kumar</h3>
-                            <span class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded font-bold italic"><i class="fa-solid fa-certificate"></i> VERIFIED</span>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-4 font-semibold uppercase">Master Plumber</p>
-                        <div class="flex items-center text-yellow-500 mb-4">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <span class="text-gray-400 ml-2 text-sm">(5.0 - 42 reviews)</span>
-                        </div>
-                        <button class="w-full border-2 border-black py-2 rounded-lg font-bold hover:bg-black hover:text-white transition">Book Now</button>
-                    </div>
+                    <button class="border border-black px-4 py-2 rounded">Book Now</button>
                 </div>
-
-                <!-- Profile 2 -->
-                <div class="bg-white border rounded-2xl overflow-hidden hover:shadow-lg transition">
-                    <div class="bg-gray-200 h-48 flex items-center justify-center">
-                        <i class="fa-solid fa-user text-6xl text-gray-400"></i>
+                <div class="bg-white border p-6 rounded-2xl flex justify-between items-center">
+                    <div>
+                        <h3 class="font-bold text-xl">Amit (Electrician)</h3>
+                        <div class="text-yellow-500"><i class="fa-solid fa-star"></i> 4.8</div>
                     </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold">Amit Singh</h3>
-                            <span class="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded font-bold italic"><i class="fa-solid fa-certificate"></i> VERIFIED</span>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-4 font-semibold uppercase">Electrician</p>
-                        <div class="flex items-center text-yellow-500 mb-4">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-regular fa-star"></i>
-                            <span class="text-gray-400 ml-2 text-sm">(4.0 - 18 reviews)</span>
-                        </div>
-                        <button class="w-full border-2 border-black py-2 rounded-lg font-bold hover:bg-black hover:text-white transition">Book Now</button>
-                    </div>
+                    <button class="border border-black px-4 py-2 rounded">Book Now</button>
                 </div>
-
-                <!-- Profile 3 -->
-                <div class="bg-white border rounded-2xl overflow-hidden hover:shadow-lg transition">
-                    <div class="bg-gray-200 h-48 flex items-center justify-center">
-                        <i class="fa-solid fa-user text-6xl text-gray-400"></i>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex justify-between items-start mb-2">
-                            <h3 class="text-xl font-bold">Sunita Devi</h3>
-                        </div>
-                        <p class="text-gray-600 text-sm mb-4 font-semibold uppercase">Carpentry Specialist</p>
-                        <div class="flex items-center text-yellow-500 mb-4">
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star"></i>
-                            <i class="fa-solid fa-star-half-stroke"></i>
-                            <i class="fa-regular fa-star"></i>
-                            <span class="text-gray-400 ml-2 text-sm">(3.5 - 29 reviews)</span>
-                        </div>
-                        <button class="w-full border-2 border-black py-2 rounded-lg font-bold hover:bg-black hover:text-white transition">Book Now</button>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
 
-    <!-- FOOTER (Same as before) -->
-    <footer class="bg-gray-900 text-white py-12 mt-20">
+    <!-- PAGE: HOME (Keep this last in the HTML) -->
+    <div id="home" class="page">
+        <header class="bg-skillora py-32 px-4 text-center">
+            <h1 class="text-7xl font-bold text-gray-900 mb-6">SKILLORA</h1>
+            <p class="text-2xl text-gray-700 mb-10 italic">"Bridging rural skills with urban needs"</p>
+            <div class="flex flex-col md:flex-row justify-center gap-4">
+                <a href="#find-help" class="bg-black text-white px-8 py-4 rounded-lg font-bold text-lg">Find Skilled Help</a>
+                <a href="#worker-info" class="bg-white text-black border-2 border-black px-8 py-4 rounded-lg font-bold text-lg">Provide a Service</a>
+            </div>
+        </header>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-gray-900 text-white py-12">
         <div class="max-w-7xl mx-auto px-4 text-center">
-            <span class="text-2xl font-bold tracking-tighter">SKILLORA</span>
-            <p class="mt-4 text-gray-400 text-sm italic">"Bridging rural skills with urban needs"</p>
-            <p class="mt-8 text-xs text-gray-500">© 2023 Skillora Prototype. No real payments or data collection.</p>
+            <p class="text-gray-500 text-xs">© 2023 Skillora Prototype. Browser back button enabled.</p>
         </div>
     </footer>
 
-    <!-- JAVASCRIPT FOR PAGE SWITCHING -->
     <script>
-        function showPage(pageId) {
-            // Hide all pages
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(page => {
-                page.classList.remove('page-active');
-            });
-            
-            // Show requested page
-            const activePage = document.getElementById(pageId);
-            activePage.classList.add('page-active');
-            
-            // Scroll to top
+        // Smooth scroll to top when changing "pages"
+        window.addEventListener('hashchange', function() {
             window.scrollTo(0, 0);
-        }
+        });
     </script>
 
 </body>
